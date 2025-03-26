@@ -5,10 +5,11 @@ const cookieParser = require("cookie-parser");
 const connectDB = require("./server/config/db");
 const MongoStore = require("connect-mongo");
 const session = require("express-session"); // Add this line
+const methodOverride = require("method-override");
+const { isActiveRoute } = require("./server/helpers/routeHelper");
 
 const app = express();
 const PORT = 5000 || process.env.PORT;
-
 // connect to database
 
 connectDB();
@@ -16,6 +17,7 @@ connectDB();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
+app.use(methodOverride("_method"));
 
 app.use(
   session({
@@ -34,6 +36,8 @@ app.use(express.static("public"));
 app.use(expressLayouts);
 app.set("layout", "./layouts/main");
 app.set("view engine", "ejs");
+
+app.locals.isActiveRoute = isActiveRoute;
 
 app.use("/", require("./server/routes//main"));
 app.use("/", require("./server/routes/admin"));

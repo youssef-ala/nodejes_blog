@@ -24,6 +24,7 @@ const getHomePage = async (req, res) => {
       data,
       current: page,
       nextPage: hasNextPage ? nextPage : null,
+      currentRoute: "/",
     });
   } catch (error) {
     console.log(error);
@@ -39,6 +40,7 @@ const getPost = async (req, res) => {
     const locals = {
       title: data.title,
       description: "simple blog created with nodejs and mongodb",
+      currentRoute: `/post/${slug}`,
     };
 
     res.render("post", { locals, data });
@@ -73,11 +75,12 @@ const searchPosts = async (req, res) => {
 
 const getAboutPage = (req, res) => {
   res.render("about");
+  currentRoute: "/about";
 };
 
 module.exports = {
   getHomePage,
   getPost,
   searchPosts,
-  getAboutPage
+  getAboutPage,
 };
